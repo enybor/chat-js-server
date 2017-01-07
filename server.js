@@ -10,10 +10,14 @@ app.use(function (req, res) {
   res.send({ msg: "hello" });
 });
 
+var clients = [];
 wss.on('connection', function connection(ws) {
+  clients.push(ws);
 
   ws.on('message', function incoming(message) {
-    ws.send(message);
+    clients.forEach(function (client) {
+      client.send(message);
+    })
   });
 });
 
